@@ -1,0 +1,18 @@
+/*
+ * anb_f.h
+ *
+ *  Created on: 9 abr. 2020
+ *      Author: aleja
+ */
+
+#ifndef ANB_F_H_
+#define ANB_F_H_
+
+int devuelvePromedio(int* pArray, int size, float* resultado);
+int imprimirArrayInt(int* pArray,int size);
+int buscaNumint(int* pArray, int size, int* pos);
+int ordenaArray(int* pArray,int size, char sentido);
+int devuelveMaxAndMin(int* pArray, int size, int* max, int* min);
+int iniArrayInt(int* pArray, int size, int valor);
+int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos);
+#endif /* ANB_F_H_ */
