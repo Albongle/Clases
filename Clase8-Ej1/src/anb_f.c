@@ -86,6 +86,37 @@ int devuelveMaxAndMin(int* pArray, int size, int* max, int* min)
 	return ret;
 }
 
+int devuelveMaxAndMinFloat(float* pArray, int size, float* max, float* min)
+{
+	int ret=0;
+	int i;
+	float nMin;
+	float nMax;
+	if(pArray!=NULL && size>0 && max!=NULL && min!=NULL)
+	{
+
+		for (i=0; i<size; i++)
+				 {
+					if(i==0 || pArray[i]< nMin)
+					{
+						nMin=pArray[i];
+					}
+					if(i==0 || pArray[i]> nMax)
+					{
+						nMax=pArray[i];
+					}
+				 }
+
+		*min=nMin;
+		*max=nMax;
+		ret=1;
+	}
+	return ret;
+
+
+}
+
+
 
 
 int imprimirArrayInt(int* pArray,int size)
@@ -97,6 +128,21 @@ int imprimirArrayInt(int* pArray,int size)
 		for(i = 0; i < size; i++)
 		{
 			printf("El indice [%d] tiene como valor %d\n", i, pArray[i]);
+		}
+		retorno=1;
+	}
+
+	return retorno;
+}
+int imprimirArrayFloat(float* pArray,int size)
+{
+	int i;
+	int retorno=0;
+	if(pArray != NULL && size > 0)
+	{
+		for(i = 0; i < size; i++)
+		{
+			printf("El indice [%d] tiene como valor %.2f\n", i, pArray[i]);
 		}
 		retorno=1;
 	}
@@ -197,6 +243,31 @@ int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int m
 		for (i=0; i<size; i++)
 		{
 			if(utn_getNumero(&buffer,pMensaje,pMensajeError,minimo,maximo,reintentos))
+			{
+				pArray[i]=buffer;
+			}
+			ret=1;
+		}
+
+	}
+	return ret;
+
+}
+
+
+int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos)
+{
+	int ret=0;
+	float buffer;
+	int i;
+
+
+	if(pArray!=NULL && size >0)
+	{
+
+		for (i=0; i<size; i++)
+		{
+			if(utn_getNumeroConDecimales(&buffer,pMensaje,pMensajeError,minimo,maximo,reintentos))
 			{
 				pArray[i]=buffer;
 			}
