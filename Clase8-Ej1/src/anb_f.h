@@ -16,6 +16,6 @@ int ordenaArray(int* pArray,int size, char sentido);
 int devuelveMaxAndMin(int* pArray, int size, int* max, int* min);
 int devuelveMaxAndMinFloat(float* pArray, int size, float* max, float* min);
 int iniArrayInt(int* pArray, int size, int valor);
-int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos);
-int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos);
+int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos, int* pos);
+int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos, int* pos);
 #endif /* ANB_F_H_ */

@@ -230,50 +230,60 @@ int iniArrayInt(int* pArray,int size,int valor)
 return ret;
 }
 
-int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos)
+int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos, int* pos)
 {
 	int ret=0;
 	int buffer;
-	int i;
+	int i=0;
+	char respuesta;
 
 
-	if(pArray!=NULL && size >0)
+	if(pArray!=NULL && size >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
 	{
 
-		for (i=0; i<size; i++)
+		do
 		{
+			fflush(stdin);
+
 			if(utn_getNumero(&buffer,pMensaje,pMensajeError,minimo,maximo,reintentos))
 			{
 				pArray[i]=buffer;
+				i++;
 			}
-			ret=1;
-		}
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
+		}while(respuesta!='n' && i<=size);
 
+		*pos=i;
+		ret=1;
 	}
 	return ret;
 
 }
 
 
-int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos)
+int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos, int* pos)
 {
 	int ret=0;
 	float buffer;
-	int i;
+	int i=0;
+	char respuesta;
 
 
-	if(pArray!=NULL && size >0)
+	if(pArray!=NULL && size >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
 	{
-
-		for (i=0; i<size; i++)
+		do
 		{
+			fflush(stdin);
+
+
 			if(utn_getNumeroConDecimales(&buffer,pMensaje,pMensajeError,minimo,maximo,reintentos))
 			{
 				pArray[i]=buffer;
 			}
-			ret=1;
-		}
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
+		}while(respuesta!='n' && i<=size);
 
+		ret=1;
 	}
 	return ret;
 
