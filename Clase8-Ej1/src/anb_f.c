@@ -150,6 +150,22 @@ int imprimirArrayFloat(float* pArray,int size)
 	return retorno;
 }
 
+int imprimirArrayString(char* pArray,int size)
+{
+	int i;
+	int retorno=0;
+	if(pArray != NULL && size > 0)
+	{
+		for(i = 0; i < size; i++)
+		{
+			printf("El indice [%d] tiene como valor %s\n", i, pArray[i]);
+		}
+		retorno=1;
+	}
+
+	return retorno;
+}
+
 
 
 
@@ -279,9 +295,39 @@ int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, i
 			if(utn_getNumeroConDecimales(&buffer,pMensaje,pMensajeError,minimo,maximo,reintentos))
 			{
 				pArray[i]=buffer;
+				i++;
 			}
 			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
 		}while(respuesta!='n' && i<=size);
+
+		ret=1;
+	}
+	return ret;
+
+}
+
+int getArrayString(char* pArray, int sizeY,int sizeX,char* pMensaje, char* pMensajeError, int reintentos, int* pos)
+{
+	int ret=0;
+	char buffer[sizeX];
+	int i=0;
+	char respuesta;
+
+
+	if(pArray!=NULL && sizeY >0 && sizeX >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
+	{
+		do
+		{
+			fflush(stdin);
+
+
+			if(utn_getTexto(buffer,pMensaje,pMensajeError,reintentos,sizeX))
+			{
+				strcpy(pArray[i],buffer);
+				i++;
+			}
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando texto (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
+		}while(respuesta!='n' && i<=sizeY);
 
 		ret=1;
 	}

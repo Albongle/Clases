@@ -15,7 +15,7 @@
 #include "utn.h"
 #include "anb_f.h"
 #define QTY_ALUMNOS 3
-#define SIZE 128
+#define SIZE_CARACTERES 128
 
 
 
@@ -24,35 +24,27 @@ int main(void) {
 		setbuf(stdout, NULL);
 
 
-		int arrayEdades[QTY_ALUMNOS];
-		float arrayNotas[QTY_ALUMNOS];
-		int eMax;
-		int eMin;
-		float nMax;
-		float nMin;
+		//int arrayEdades[QTY_ALUMNOS];
+		//float arrayNotas[QTY_ALUMNOS];
+		//int eMax;
+		//int eMin;
+		//float nMax;
+		//float nMin;
 		int i;
-		char nombre[SIZE];
+		char nombre[QTY_ALUMNOS][SIZE_CARACTERES];
+
+
+		getArrayString(nombre,QTY_ALUMNOS,SIZE_CARACTERES,"Ingrese el nombre del Allumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
+
+
+		imprimirArrayString(nombre,QTY_ALUMNOS);
 
 
 
 
 
 
-			if(utn_getTexto(nombre,"Ingrese el nombre del alumno\n","Error verifique los datos ingresados, quedan %d reintentos\n",2, SIZE))
-			{
-				printf("\nEl nombre ingresado fue: %s \n",nombre);
-			}
-			else
-			{
-				printf("\nse acabaron las posibilidades\n");
-			}
-
-
-
-
-
-
-		iniArrayInt(arrayEdades,QTY_ALUMNOS,0);
+		/*iniArrayInt(arrayEdades,QTY_ALUMNOS,0);
 		getArrayInt(arrayEdades,QTY_ALUMNOS,"Ingrese la edad\n","Error debe ser entre 0 y 100\n",0,100,3, &i);
 		getArrayFloat(arrayNotas,QTY_ALUMNOS,"Ingrese la nota\n","Error debe ser entre 0 y 10\n",0,10,3, &i);
 
@@ -71,7 +63,7 @@ int main(void) {
 		{
 			printf("El minimo de nota es %.2f\n", nMin);
 			printf("El maximo de nota es %.2f\n", nMax);
-		}
+		}*/
 
 
 
