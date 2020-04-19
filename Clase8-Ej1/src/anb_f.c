@@ -328,34 +328,24 @@ int getArrayString(char pArray[][128],int sizeY,int sizeX,char* pMensaje, char* 
 	if(pArray!=NULL && sizeY >0 && sizeX >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
 	{
 
-		/*for(i=0;i<sizeY;i++)
-		{
-			if(utn_getTexto(buffer,pMensaje,pMensajeError,reintentos,sizeX))
-			{
-				strcpy(pArray[i],buffer);
-
-			}
-		}*/
-
 		do
 		{
-			fflush(stdin);
 
+			fflush(stdin);
 			if(utn_getTexto(buffer,pMensaje,pMensajeError,reintentos,sizeX))
 			{
 				strcpy(pArray[i],buffer);
 				i++;
 			}
 			else
-			{break;}
-			if(i<sizeY)
 			{
-				printf("respuesta: %c",respuesta);
-				utn_getCaracter(&respuesta,"\nDesea seguir ingresando texto (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn\0",3,3);
-				printf("respuesta: %c",respuesta);
-				printf("incremento: %d",i);
+				break;
 			}
 
+			if(i<sizeY)
+			{
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando (s/n)\n","Error la respuesta debe ser (s o n) quedan %d reintentos ","sn\0",3,3);
+			}
 		}while(respuesta!='n' && i<sizeY);
 
 		*pos=i;

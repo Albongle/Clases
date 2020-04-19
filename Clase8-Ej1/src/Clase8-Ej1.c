@@ -14,7 +14,7 @@
 #include <ctype.h>
 #include "utn.h"
 #include "anb_f.h"
-#define QTY_ALUMNOS 3
+#define QTY_ALUMNOS 5
 #define SIZE_CARACTERES 128
 
 
@@ -38,15 +38,7 @@ int main(void) {
 
 		getArrayString(nombre,QTY_ALUMNOS,SIZE_CARACTERES ,"Ingrese el nombre del Alumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
 
-		/*for(i=0; i<QTY_ALUMNOS;i++)
-		{
-		if(utn_getTexto(auxNombre,"Ingrese el nombre del Alumno\n","Error verifique el nombre ingresado quedan %d reintentos\n",3,SIZE_CARACTERES))
-		{
-			strcpy(nombre[i],auxNombre);
-		}
 
-		printf("El indice [%d] tiene como valor %s\n", i, nombre[i]);
-		}*/
 		imprimirArrayString(nombre,i);
 
 
