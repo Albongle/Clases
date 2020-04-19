@@ -150,7 +150,7 @@ int imprimirArrayFloat(float* pArray,int size)
 	return retorno;
 }
 
-int imprimirArrayString(char* pArray,int size)
+int imprimirArrayString(char pArray[][128],int size)
 {
 	int i;
 	int retorno=0;
@@ -266,11 +266,16 @@ int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int m
 				pArray[i]=buffer;
 				i++;
 			}
-			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
-		}while(respuesta!='n' && i<=size);
+			else
+			{break;}
+			if(i<size)
+			{
+				utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn\0",2,3);
+			}
+		}while(respuesta!='n' && i<size);
 
 		*pos=i;
-		ret=1;
+		 ret=1;
 	}
 	return ret;
 
@@ -297,16 +302,22 @@ int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, i
 				pArray[i]=buffer;
 				i++;
 			}
-			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
-		}while(respuesta!='n' && i<=size);
+			else
+			{break;}
+			if(i<size)
+			{
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando numeros (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn\0",3,3);
+			}
+		}while(respuesta!='n' && i<size);
 
-		ret=1;
+		*pos=i;
+		 ret=1;
 	}
 	return ret;
 
 }
 
-int getArrayString(char* pArray, int sizeY,int sizeX,char* pMensaje, char* pMensajeError, int reintentos, int* pos)
+int getArrayString(char pArray[][128],int sizeY,int sizeX,char* pMensaje, char* pMensajeError, int reintentos, int* pos)
 {
 	int ret=0;
 	char buffer[sizeX];
@@ -316,20 +327,39 @@ int getArrayString(char* pArray, int sizeY,int sizeX,char* pMensaje, char* pMens
 
 	if(pArray!=NULL && sizeY >0 && sizeX >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
 	{
+
+		/*for(i=0;i<sizeY;i++)
+		{
+			if(utn_getTexto(buffer,pMensaje,pMensajeError,reintentos,sizeX))
+			{
+				strcpy(pArray[i],buffer);
+
+			}
+		}*/
+
 		do
 		{
 			fflush(stdin);
-
 
 			if(utn_getTexto(buffer,pMensaje,pMensajeError,reintentos,sizeX))
 			{
 				strcpy(pArray[i],buffer);
 				i++;
 			}
-			utn_getCaracter(&respuesta,"\nDesea seguir ingresando texto (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn",3);
-		}while(respuesta!='n' && i<=sizeY);
+			else
+			{break;}
+			if(i<sizeY)
+			{
+				printf("respuesta: %c",respuesta);
+				utn_getCaracter(&respuesta,"\nDesea seguir ingresando texto (s/n)\n","Error debe ser (s o n) quedan %d reintentos ","sn\0",3,3);
+				printf("respuesta: %c",respuesta);
+				printf("incremento: %d",i);
+			}
 
-		ret=1;
+		}while(respuesta!='n' && i<sizeY);
+
+		*pos=i;
+		 ret=1;
 	}
 	return ret;
 

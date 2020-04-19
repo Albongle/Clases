@@ -31,13 +31,23 @@ int main(void) {
 		//float nMax;
 		//float nMin;
 		int i;
+		//char auxNombre[SIZE_CARACTERES];
 		char nombre[QTY_ALUMNOS][SIZE_CARACTERES];
 
 
-		getArrayString(nombre,QTY_ALUMNOS,SIZE_CARACTERES,"Ingrese el nombre del Allumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
 
+		getArrayString(nombre,QTY_ALUMNOS,SIZE_CARACTERES ,"Ingrese el nombre del Alumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
 
-		imprimirArrayString(nombre,QTY_ALUMNOS);
+		/*for(i=0; i<QTY_ALUMNOS;i++)
+		{
+		if(utn_getTexto(auxNombre,"Ingrese el nombre del Alumno\n","Error verifique el nombre ingresado quedan %d reintentos\n",3,SIZE_CARACTERES))
+		{
+			strcpy(nombre[i],auxNombre);
+		}
+
+		printf("El indice [%d] tiene como valor %s\n", i, nombre[i]);
+		}*/
+		imprimirArrayString(nombre,i);
 
 
 

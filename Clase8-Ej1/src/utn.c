@@ -201,6 +201,7 @@ if (pIngreso!=NULL && pMensaje!=NULL && pMensajeError!=NULL && reintentos>=0)
 		bufferIng[strlen(bufferIng)-1]='\0';
 		if(getString (bufferIng))
 		{
+
 			break;
 		}
 		else
@@ -232,7 +233,7 @@ if(pTexto!=NULL)
 
 	while(pTexto[i]!='\0')
 	{
-		if(isalpha(pTexto[i]))
+		if(isalpha(pTexto[i])||pTexto[i]==' ')
 		{
 			i++;
 		}
@@ -248,23 +249,22 @@ return ret;
 
 int buscaChar(char* caracter,char* pArrayB, int size);
 int getString(char* pTexto);
-int utn_getCaracter(char* pCaracter, char* pMensaje, char* pMensajeError,char* pRango, int reintentos)
+int utn_getCaracter(char* pCaracter, char* pMensaje, char* pMensajeError,char* pRango,int size, int reintentos)
 {
 int ret=0;
 int flagC=0;
-int size=10;
 char bufferIng[size];
 
-if (pCaracter!=NULL && pMensaje!=NULL && pMensajeError!=NULL && pRango!=NULL && reintentos>=0)
+if (pCaracter!=NULL && pMensaje!=NULL && pMensajeError!=NULL && pRango!=NULL && size>0 && reintentos>=0)
 {
 
 	do
 	{
-		fflush(stdin);
+
 		printf(pMensaje);
 		fgets(bufferIng,sizeof(bufferIng),stdin);
 		bufferIng[strlen(bufferIng)-1]='\0';
-
+		fflush(stdin);
 		if(getString(bufferIng))
 		{
 
