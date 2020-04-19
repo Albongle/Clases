@@ -150,7 +150,7 @@ int imprimirArrayFloat(float* pArray,int size)
 	return retorno;
 }
 
-int imprimirArrayString(char pArray[][128],int size)
+int imprimirArrayString(char pArray[][50],int size)
 {
 	int i;
 	int retorno=0;
@@ -245,6 +245,40 @@ int iniArrayInt(int* pArray,int size,int valor)
 	}
 return ret;
 }
+int iniArrayFloat(float* pArray,int size,float valor)
+{
+	int i;
+	int ret=0;
+
+	if(pArray!=NULL && size>0)
+	{
+		for(i = 0; i < size; i++)
+		{
+
+			pArray[i]=valor;
+
+		}
+	ret=1;
+	}
+return ret;
+}
+int iniArrayString(char pArray[][50],int size,char valor)
+{
+	int i;
+	int ret=0;
+
+	if(pArray!=NULL && size>0)
+	{
+		for(i = 0; i < size; i++)
+		{
+
+			*pArray[i]=valor;
+
+		}
+	ret=1;
+	}
+return ret;
+}
 
 int getArrayInt(int* pArray, int size,char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos, int* pos)
 {
@@ -317,7 +351,7 @@ int getArrayFloat(float* pArray, int size,char* pMensaje, char* pMensajeError, i
 
 }
 
-int getArrayString(char pArray[][128],int sizeY,int sizeX,char* pMensaje, char* pMensajeError, int reintentos, int* pos)
+int getArrayString(char pArray[][50],int sizeY,int sizeX,char* pMensaje, char* pMensajeError, int reintentos, int* pos)
 {
 	int ret=0;
 	char buffer[sizeX];
@@ -353,5 +387,103 @@ int getArrayString(char pArray[][128],int sizeY,int sizeX,char* pMensaje, char* 
 	}
 	return ret;
 
+}
+
+int getArrayChar(char* pArray,int size,char* pMensaje, char* pMensajeError, char* pCaracteres,int qCaracteres, int reintentos, int* pos)
+{
+
+	int ret=0;
+	char buffer;
+	int i=0;
+	char respuesta;
+
+
+	if(pArray!=NULL && size >0 && pos!=NULL && pMensaje!=NULL && pMensajeError!=NULL)
+	{
+
+		do
+		{
+
+			fflush(stdin);
+			if(utn_getCaracter(&buffer,pMensaje,pMensajeError,pCaracteres,qCaracteres,reintentos))
+			{
+				pArray[i]=buffer;
+				i++;
+			}
+			else
+			{
+				break;
+			}
+
+			if(i<size)
+			{
+			utn_getCaracter(&respuesta,"\nDesea seguir ingresando (s/n)\n","Error la respuesta debe ser (s o n) quedan %d reintentos ","sn\0",3,3);
+			}
+		}while(respuesta!='n' && i<size);
+
+		*pos=i;
+		 ret=1;
+	}
+	return ret;
+
+
+}
+
+
+static int swapString(char pArray[][50], int pos);
+int ordenaArrayString(char pArray[][50],int size, char sentido)
+{
+	int flagSwap=1;
+	int i;
+	int cont=0;
+	int retorno = 0;
+	if(pArray != NULL && size > 0)
+			{
+				while(flagSwap)
+				{
+					cont++;
+					flagSwap = 0;
+					for(i = 0 ; i < size-cont ; i++)
+					{
+						switch (sentido)
+						{
+						case '>':
+							{
+							if(strcmp(pArray[i],pArray[i+1])>0)
+								{
+									flagSwap = 1;
+									swapString(pArray, i);
+								}
+							break;
+							}
+						case '<':
+							{
+							if(strcmp(pArray[i],pArray[i+1])<0)
+								{
+									flagSwap = 1;
+									swapString(pArray, i);
+								}
+							break;
+							}
+						}
+					}
+				}
+		retorno = 1;
+			}
+	return retorno;
+}
+
+static int swapString(char pArray[][50], int pos)
+{
+char buffer[50];
+
+if (pArray!=NULL && pos >=0)
+{
+	strcpy(buffer,pArray[pos]);
+	strcpy(pArray[pos],pArray[pos+1]);
+	strcpy(pArray[pos+1],buffer);
+}
+
+return 1;
 }
 
