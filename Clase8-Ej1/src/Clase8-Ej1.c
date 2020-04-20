@@ -41,10 +41,10 @@ int main(void) {
 		iniArrayString(arrayNombre,QTY_ALUMNOS,'\0');
 		iniArrayString(arrayApellido,QTY_ALUMNOS,'\0');
 
-		getArrayInt(arrayLegajo,QTY_ALUMNOS,"Ingrese el legajo del alumno n","Error debe ser entre 0 y 100\n",0,100,3, &i);
+		getArrayInt(arrayLegajo,QTY_ALUMNOS,"Ingrese el legajo del alumno \n","Error debe ser entre 0 y 100\n",0,100,3, &i);
 		getArrayString(arrayNombre,i,SIZE_CARACTERES ,"Ingrese el nombre del Alumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
 		getArrayString(arrayApellido,i,SIZE_CARACTERES ,"Ingrese el apellido del Alumno:\n","Error verifique el dato ingresado, quedan %d reintentos\n",2,&i);
-		getArrayChar(arraySexo,i,"Ingrese el sexo del Alumno (f o m):\n","Error verifique el dato ingresado, quedan %d reintentos\n","fm\0",3,3,&i);
+		getArrayChar(arraySexo,i,"Ingrese el sexo del Alumno (f o m):\n","Error verifique el dato ingresado, quedan %d reintentos\n","fm\0",3,&i);
 		getArrayInt(arrayEdades,i,"Ingrese la edad\n","Error debe ser entre 0 y 100\n",0,100,3, &i);
 		getArrayFloat(arrayNotas1,i,"Ingrese la nota\n","Error debe ser entre 0 y 10\n",0,10,3, &i);
 
