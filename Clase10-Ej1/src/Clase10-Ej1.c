@@ -14,26 +14,24 @@
 #include "utn.h"
 #include "alumnos.h"
 
-#define ELEMENTOS 5
-#define SIZE_CARACTERES 50
 
 
 
 
 
-
+int menu();
 
 int main(void) {
 
 system("COLOR FD");
 
 		setbuf(stdout, NULL);
-		eAlumnos datos[ELEMENTOS];
+		eAlumnos datos[A_ELEMENTOS];
 		int ingreso;
 		int posicionImpr=0;
-		int posLibres=ELEMENTOS;
+		int posLibres=A_ELEMENTOS;
 
-		iniArrayLeg(datos,ELEMENTOS,-1); // inicializo array de legajos en -1
+		iniArrayLeg(datos,A_ELEMENTOS,-1); // inicializo array de legajos en -1
 
 		do
 		{
@@ -42,14 +40,14 @@ system("COLOR FD");
 
 			system("CLS()");
 			printf("Hay %d posiciones libres\n\n\n", posLibres);
-			utn_getNumero(&ingreso,"1-ingreso de datos\n2-Modificacion de datos\n3-Ordena por Nombre e imprime\n4-Imprimir todos los datos\n5-Salir\n\nElija un opcion:","Error verifique los datos ingresados quedan %d intentos\n",1,5,3);
 
+			ingreso=menu();
 			switch (ingreso)
 			{
 				case 1:
 				{
-					getSetDeDatos(datos,ELEMENTOS,&posicionImpr);
-					posLibres=ELEMENTOS-posicionImpr;
+					getSetDeDatos(datos,A_ELEMENTOS,&posicionImpr);
+					posLibres=A_ELEMENTOS-posicionImpr;
 					break;
 				}
 
@@ -73,13 +71,38 @@ system("COLOR FD");
 
 
 
-		}while(ingreso!=5);
+		}while(ingreso!=8);
 
 
 
 			system("PAUSE()");
 
 return 0;
+}
+
+int menu()
+{
+	int opcion=0;
+
+	printf("Menu de opciones\n\n");
+	printf("1-Alta de Alumno\n");
+	printf("2-Baja de Alumno\n");
+	printf("3-Modificar Alumno\n");
+	printf("4-Listar Alumnos\n");
+	printf("5-Ordenar Alumno\n");
+	printf("6-Informes\n");
+	printf("7-Mostrar carreras\n");
+	printf("8-Salir\n");
+
+	if(!(utn_getNumero(&opcion,"Elija un opcion: ","Error verifique los datos ingresados quedan %d intentos\n",1,8,3)))
+	{
+		printf("No se reconocio el ingreso, supero el maximo de posibilidades\n");
+		system("PAUSE()");
+	}
+
+
+
+return opcion;
 }
 
 

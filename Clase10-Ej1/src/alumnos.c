@@ -10,8 +10,7 @@
 #include <ctype.h>
 #include "utn.h"
 #include "alumnos.h"
-#define ELEMENTOS 5
-#define SIZE_CARACTERES 50
+
 
 
 
@@ -241,7 +240,7 @@ if(datosAux!=NULL && size>0 )
 return ret;
 }
 
-int iniArrayLeg(eAlumnos* datosAux,int size,int valor)
+iniArrayAlumnos(eAlumnos* datosAux,int size,int valorInt, char valorStr)
 {
 	int i;
 	int ret=0;
@@ -251,7 +250,7 @@ int iniArrayLeg(eAlumnos* datosAux,int size,int valor)
 		for(i = 0; i < size; i++)
 		{
 
-			datosAux[i].legajo=valor;
+			datosAux[i].legajo=valorInt;
 
 		}
 	ret=1;

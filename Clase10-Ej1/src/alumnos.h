@@ -7,10 +7,9 @@
 
 #ifndef ALUMNOS_H_
 #define ALUMNOS_H_
-#define ELEMENTOS 5
+#define A_ELEMENTOS 5
+#define A_SIZE_CARACTERES 50
 
-
-#define SIZE_CARACTERES 50
 typedef struct eFecha{
 
 	int dia;
@@ -30,8 +29,8 @@ typedef struct eNotas{
 typedef struct eAlumnos{
 
 	int legajo;
-	char nombre[SIZE_CARACTERES];
-	char apellido[SIZE_CARACTERES];
+	char nombre[A_SIZE_CARACTERES];
+	char apellido[A_SIZE_CARACTERES];
 	int edad;
 	char sexo;
 	eNotas evaluacion;
@@ -44,7 +43,7 @@ typedef struct eAlumnos{
 int getSetDeDatos(eAlumnos* datosAux, int sizeArray, int* pos);
 void mostrarDatos(eAlumnos* datosAux, int size);
 int buscaLegajo(eAlumnos* datosAux,int valorBuscado, int size, int* pos);
-int iniArrayLeg(eAlumnos* datosAux,int size,int valor);
+int iniArrayAlumnos(eAlumnos* datosAux,int size,int valorInt, char valorStr);
 int ordenaNombre(eAlumnos* datosAux,int size, char sentido);
 
 
