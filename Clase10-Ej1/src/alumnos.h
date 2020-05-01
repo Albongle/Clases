@@ -7,8 +7,9 @@
 
 #ifndef ALUMNOS_H_
 #define ALUMNOS_H_
-#define A_ELEMENTOS 5
+#define Q_ALUMNOS 10
 #define A_SIZE_CARACTERES 50
+#include "carreras.h"
 
 typedef struct eFecha{
 
@@ -40,11 +41,14 @@ typedef struct eAlumnos{
 }eAlumnos;
 
 
-int getSetDeDatos(eAlumnos* datosAux, int sizeArray, int* pos);
-void mostrarDatos(eAlumnos* datosAux, int size);
-int buscaLegajo(eAlumnos* datosAux,int valorBuscado, int size, int* pos);
-int iniArrayAlumnos(eAlumnos* datosAux,int size,int valorInt, char valorStr);
-int ordenaNombre(eAlumnos* datosAux,int size, char sentido);
+int getSetDeDatos(eAlumnos* pArray, int sizeArray, int* pos);
+void mostrarAlumnos(eAlumnos* pArray, int size);
+int buscaIndice(eAlumnos* pArray, int size);
+void iniArrayAlumnos(eAlumnos* pArray,int size,int valorInt);
+int ordenaAlumnos(eAlumnos* pArray,int size, char sentido);
+int hardcodearAlumnos(eAlumnos* pArray, int size, int cantidad);
+int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera);
+int bajaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera);
 
 
 #endif /* ALUMNOS_H_ */

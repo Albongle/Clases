@@ -13,6 +13,7 @@
 #include <ctype.h>
 #include "utn.h"
 #include "alumnos.h"
+#include "carreras.h"
 
 
 
@@ -26,12 +27,16 @@ int main(void) {
 system("COLOR FD");
 
 		setbuf(stdout, NULL);
-		eAlumnos datos[A_ELEMENTOS];
+		eAlumnos listadoAlumnos[Q_ALUMNOS];
+		eCarrera carreras[]= {{1000, "TUP"},{1001, "TUSI"},{1002, "LIC"}}; //Hardcodeo carreras
 		int ingreso;
-		int posicionImpr=0;
-		int posLibres=A_ELEMENTOS;
+		int legajo=20000;
+		iniArrayAlumnos(listadoAlumnos,Q_ALUMNOS,1); // inicializo array alumnos poniendo en isEmpty 1
 
-		iniArrayLeg(datos,A_ELEMENTOS,-1); // inicializo array de legajos en -1
+		legajo=legajo+hardcodearAlumnos(listadoAlumnos,Q_ALUMNOS,5);
+
+
+
 
 		do
 		{
@@ -39,31 +44,46 @@ system("COLOR FD");
 
 
 			system("CLS()");
-			printf("Hay %d posiciones libres\n\n\n", posLibres);
+
 
 			ingreso=menu();
 			switch (ingreso)
 			{
 				case 1:
 				{
-					getSetDeDatos(datos,A_ELEMENTOS,&posicionImpr);
-					posLibres=A_ELEMENTOS-posicionImpr;
+					altaAlumno(listadoAlumnos, Q_ALUMNOS,legajo,carreras,CARR_ELEMENTOS);
+
+					legajo++;
+
+					break;
+				}
+				case 2:
+				{
+					bajaAlumno(listadoAlumnos,Q_ALUMNOS,legajo,carreras,CARR_ELEMENTOS);
+					system("PAUSE()");
 					break;
 				}
 
-				case 3:
+				case 4:
+				{
+					mostrarAlumnos(listadoAlumnos, Q_ALUMNOS);
+					system("PAUSE()");
+					break;
+				}
+
+				case 5:
 				{
 
-				ordenaNombre(datos,posicionImpr,'>');
-				mostrarDatos(datos, posicionImpr);
+				ordenaAlumnos(listadoAlumnos,Q_ALUMNOS,'>');
+				mostrarAlumnos(listadoAlumnos, Q_ALUMNOS);
 				system("PAUSE()");
 
 				break;
 				}
 
-				case 4:
+				case 7:
 				{
-					mostrarDatos(datos, posicionImpr);
+					mostrarCarreras(carreras,CARR_ELEMENTOS);
 					system("PAUSE()");
 					break;
 				}
@@ -79,6 +99,8 @@ system("COLOR FD");
 
 return 0;
 }
+
+
 
 int menu()
 {

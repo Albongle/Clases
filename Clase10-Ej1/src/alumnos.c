@@ -18,256 +18,203 @@
 
 
 
-int getSetDeDatos(eAlumnos* datosAux, int sizeArray, int* pos)
+eAlumnos nuevoAlumno(int legajo,char nombre[],char apellido[], char sexo, int edad, float nota1, float nota2,eFecha fecha,int idCarrera);
+int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera)
 {
-	int i;
+	int indice;
 	int ret=0;
 	int flag=0;
-	int bufferLegajo;
 	char bufferNombre[50];
 	char bufferApellido[50];
-	float bufferNota;
-	char respuesta;
-	char mensaje[1024];
-	char numeroTexto[10];
-	int posLegajo;
+	int bufferEdad;
 	char bufferSexo;
+	float bufferNota1;
+	float bufferNota2;
+	int bufferIdCarrera;
+	eFecha fecha;
 
-	if(*pos==0)
-	{
-		i=0;
-
-	}
-	else
-	{
-		i=*pos;
-	}
-
-	if(datosAux!=NULL)
-	{
-
-
-		do
-		{
 			system("CLS()");
-			strcpy(mensaje,"Ingrese el legajo del alumno ");
-			strcat(mensaje,itoa((i+1),numeroTexto,10));
-			strcat(mensaje,"\n");
-			fflush(stdin);
+			printf("*****Alta Alumno*****\n\n");
 
-			do
+			indice=buscaIndice(pArrayAlumno,sizeArrayAlumno);
+
+			if(indice==-1)
 			{
-				flag=0;
-				fflush(stdin);
-
-				flag=utn_getNumero(&bufferLegajo,mensaje,"Error verifique los datos ingresados quedan %d intentos\n",1,999,3);
-				if(flag==1 && !(buscaLegajo(datosAux,bufferLegajo,i,&posLegajo)))
-				{
-					datosAux[i].legajo=bufferLegajo;
-
-				}
-				else if (flag==0)
-				{
-
-					printf("Supero el maximo de intentos\n\n");
-					break;
-
-
-				}
-				else
-				{
-					printf("Se encontro el legajo ingresado en la posicion %d\n", posLegajo);
-					strcpy(mensaje,"Ingrese otro legajo para el alumno ");
-					strcat(mensaje,itoa((i+1),numeroTexto,10));
-					strcat(mensaje,"\n");
-					flag=0;
-				}
-
-			}while(!flag);
-
-			if(flag==1)
-			{
-
-				do
-				{
-					strcpy(mensaje,"Ingrese el nombre del alumno ");
-					strcat(mensaje,itoa((i+1),numeroTexto,10));
-					strcat(mensaje,"\n");
-
-					flag=0;
-					fflush(stdin);
-					flag=utn_getTexto(bufferNombre,mensaje,"Error verifique los datos ingresados quedan %d intentos\n",3,50);
-
-				}while(!flag);
-
-				strcpy(datosAux[i].nombre,bufferNombre);
-				do
-				{
-
-					strcpy(mensaje,"Ingrese el apellido del alumno ");
-					strcat(mensaje,itoa((i+1),numeroTexto,10));
-					strcat(mensaje,"\n");
-					flag=0;
-					fflush(stdin);
-					flag=utn_getTexto(bufferApellido,mensaje,"Error verifique los datos ingresados quedan %d intentos\n",3,50);
-
-				}while(!flag);
-
-
-				strcpy(datosAux[i].apellido,bufferApellido);
-
-				strcpy(mensaje,"Ingrese el sexo del alumno ");
-				strcat(mensaje,itoa((i+1),numeroTexto,10));
-				strcat(mensaje,"(m-f)\n");
-				flag=0;
-				fflush(stdin);
-
-				do
-				{
-					flag=0;
-					flag=utn_getCaracter(&bufferSexo,mensaje,"Error verifique los datos ingresados debe ser (m o f) quedan %d intentos\n","mf\0",3);
-
-				}while(!flag);
-
-				datosAux[i].sexo=bufferSexo;
-
-				do
-				{
-					strcpy(mensaje,"Ingrese la primera nota del alumno ");
-					strcat(mensaje,itoa((i+1),numeroTexto,10));
-					strcat(mensaje," (0-10)\n");
-					flag=0;
-					fflush(stdin);
-					flag=utn_getNumeroConDecimales(&bufferNota,mensaje,"Error verifique los datos ingresados quedan %d intentos\n",0,10,3);
-
-				}while(!flag);
-
-				datosAux[i].evaluacion.nota1=bufferNota;
-
-				do
-				{
-					strcpy(mensaje,"Ingrese la segunda nota del alumno ");
-					strcat(mensaje,itoa((i+1),numeroTexto,10));
-					strcat(mensaje," (0-10)\n");
-					flag=0;
-					fflush(stdin);
-					flag=utn_getNumeroConDecimales(&bufferNota,mensaje,"Error verifique los datos ingresados quedan %d intentos\n",0,10,3);
-
-				}while(!flag);
-
-				datosAux[i].evaluacion.nota2=bufferNota;
-				datosAux[i].evaluacion.promNotas=(datosAux[i].evaluacion.nota1+datosAux[i].evaluacion.nota2)/2;
-
-				i++;
-
-				if((sizeArray)>i)
-				{
-					fflush(stdin);
-					if(!(utn_getCaracter(&respuesta,"Desea seguir ingresado datos (s-n)\n","Error, verifique la respuesta ingresada, quedan %d reintentos","sn\0",3)))
-					{
-						printf("Supero el maximo de intentos");
-						break;
-					}
-				}
-
-
-				ret=1;
+				printf("Sistema completo, no se puede agregar mas Alumnos\n\n");
+				system("PAUSE()");
 			}
 			else
 			{
-				printf("No se ingreso ningun dato\n\n\n");
-				system("PAUSE()");
-				datosAux[i].legajo=-1;
-				break;
-				ret=0;
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getTexto(bufferNombre,"Ingrese el nombre del alumno\n","Error verifique los datos ingresados quedan %d intentos\n",3,50);
+				}while(!flag);
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getTexto(bufferApellido,"Ingrese el Apellido del alumno\n","Error verifique los datos ingresados quedan %d intentos\n",3,50);
 
-			}
+				}while(!flag);
+
+				do
+				{
+					flag=0;
+					flag=utn_getCaracter(&bufferSexo,"Ingrese el sexo de Alumno (m o f)\n","Error verifique los datos ingresados debe ser (m o f) quedan %d intentos\n","mf\0",3);
+
+				}while(!flag);
+
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getNumero(&bufferEdad,"Ingrese la edad del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",1,99,3);
+
+				}while(!flag);
 
 
-			*pos=i;
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getNumeroConDecimales(&bufferNota1,"Ingrese la primer nota del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",0,10,3);
 
-		}while(respuesta!='n' && i <sizeArray);
+				}while(!flag);
 
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getNumeroConDecimales(&bufferNota2,"Ingrese la segunda nota del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",0,10,3);
+
+				}while(!flag);
+
+				printf("Ingrese la fecha de ingreso: dd/mm/aaaa"); // Hacer funcion para validar Fechas
+				scanf("%d/%d/%d", &fecha.dia, &fecha.mes,&fecha.anio);
+
+
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					mostrarCarreras(pArrayCarrera,sizeArrayCarrera);
+					flag=utn_getNumero(&bufferIdCarrera,"\nIngrese Id de Carrera para el Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",1000,1002,3);
+
+				}while(!flag);
+
+
+				pArrayAlumno[indice]=nuevoAlumno(legajo,bufferNombre,bufferApellido,bufferSexo,bufferEdad,bufferNota1,bufferNota2,fecha,bufferIdCarrera);
+				ret=1;
 	}
 
 return ret;
 
 }
 
+eAlumnos nuevoAlumno(int legajo,char nombre[],char apellido[], char sexo, int edad, float nota1, float nota2,eFecha fecha,int idCarrera)
+{
+	eAlumnos nuevoAlumno;
+
+	nuevoAlumno.legajo=legajo;
+	strcpy(nuevoAlumno.nombre,nombre);
+	strcpy(nuevoAlumno.apellido,apellido);
+	nuevoAlumno.edad=edad;
+	nuevoAlumno.sexo=sexo;
+	nuevoAlumno.evaluacion.nota1=nota1;
+	nuevoAlumno.evaluacion.nota2=nota2;
+	nuevoAlumno.evaluacion.promNotas=(nota1+nota2)/2;
+	nuevoAlumno.fechaIngreso=fecha;
+	nuevoAlumno.idCarrera=idCarrera;
+	nuevoAlumno.isEmpty=0;
+
+return nuevoAlumno;
+}
 
 
-static void mostrarDato(eAlumnos datosAux);
-void mostrarDatos(eAlumnos* datosAux, int size)
+
+
+static void mostrarAlumno(eAlumnos pArray);
+void mostrarAlumnos(eAlumnos* pArray, int size)
 {
 	int i;
-	printf("Legajo          Nombre          Apellido          Nota_1          Nota_2          Promedio_Notas\n");
+	int flag=0;
+	printf("Legajo          Nombre          Apellido          Edad          Sexo          Nota_1          Nota_2          Promedio_Notas          Fecha de Ingreso\n");
 
-	if(datosAux!=NULL && size>=0)
+	if(pArray!=NULL && size>=0)
 		{
 			for(i=0;i<size;i++)
 			{
-				mostrarDato(datosAux[i]);
+				if(pArray[i].isEmpty==0)
+				{
+					mostrarAlumno(pArray[i]);
+					flag=1;
+				}
 			}
 		}
-}
 
-static void mostrarDato(eAlumnos datosAux)
-{
-	printf("%d          %s          %s          %.2f          %.2f          %.2f\n",datosAux.legajo,datosAux.nombre, datosAux.apellido,datosAux.evaluacion.nota1,datosAux.evaluacion.nota2, datosAux.evaluacion.promNotas);
-
-}
-
-
-int buscaLegajo(eAlumnos* datosAux,int valorBuscado, int size, int* pos)
-{
-int ret=0;
-int i=0;
-if(datosAux!=NULL && size>0 )
-{
-
-	while(datosAux[i].legajo!=-1 && i<size)
+	if(flag==0)
 	{
-		if (datosAux[i].legajo==valorBuscado)
-		{ret=1;
-		*pos=i;
-		break;
-		}
-		i++;
+		system("CLS()");
+		printf("\n---No hay alumnos que mostrar---\n\n");
 	}
+}
+
+static void mostrarAlumno(eAlumnos pArray)
+{
+	printf("%d          %10s          %10s          %d          %c          %.2f          %.2f          %.2f         %d/%d/%d\n",pArray.legajo,pArray.nombre, pArray.apellido,pArray.edad,pArray.sexo,pArray.evaluacion.nota1,pArray.evaluacion.nota2, pArray.evaluacion.promNotas,pArray.fechaIngreso.dia,pArray.fechaIngreso.mes,pArray.fechaIngreso.anio);
 
 }
 
-return ret;
+
+int buscaIndice(eAlumnos* pArray, int size)
+{
+int indice=-1;
+int i;
+
+if(pArray!=NULL && size>0 )
+{
+
+	for(i=0;i<size;i++)
+	{
+		if(pArray[i].isEmpty==1)
+		{
+			indice=i;
+			break;
+		}
+	}
 }
 
-iniArrayAlumnos(eAlumnos* datosAux,int size,int valorInt, char valorStr)
+return indice;
+}
+
+void iniArrayAlumnos(eAlumnos* pArray,int size,int valorInt)
 {
 	int i;
-	int ret=0;
 
-	if(datosAux!=NULL && size>0)
+	if(pArray!=NULL && size>0)
 	{
 		for(i = 0; i < size; i++)
 		{
 
-			datosAux[i].legajo=valorInt;
+			pArray[i].isEmpty=valorInt;
 
 		}
-	ret=1;
 	}
-return ret;
+
 }
 
 
 
-static void change(eAlumnos* datosAux, int pos);
-int ordenaNombre(eAlumnos* datosAux,int size, char sentido)
+static void change(eAlumnos* pArray, int pos);
+int ordenaAlumnos(eAlumnos* pArray,int size, char sentido)
 {
 	int flagSwap=1;
 	int i;
 	int cont=0;
 	int retorno = 0;
-	if(datosAux != NULL && size > 0)
+	if(pArray != NULL && size > 0)
 			{
 				while(flagSwap)
 				{
@@ -279,19 +226,19 @@ int ordenaNombre(eAlumnos* datosAux,int size, char sentido)
 						{
 						case '>':
 							{
-							if(strcmp(datosAux[i].nombre,datosAux[i+1].nombre)>0)
+							if(pArray[i].evaluacion.promNotas<pArray[i+1].evaluacion.promNotas)
 								{
 									flagSwap = 1;
-									change(datosAux, i);
+									change(pArray, i);
 								}
 							break;
 							}
 						case '<':
 							{
-							if(strcmp(datosAux[i].nombre,datosAux[i+1].nombre)<0)
+							if(pArray[i].evaluacion.promNotas>pArray[i+1].evaluacion.promNotas)
 								{
 									flagSwap = 1;
-									change(datosAux, i);
+									change(pArray, i);
 								}
 							break;
 							}
@@ -303,17 +250,121 @@ int ordenaNombre(eAlumnos* datosAux,int size, char sentido)
 	return retorno;
 }
 
-static void change(eAlumnos* datosAux, int pos)
+static void change(eAlumnos* pArray, int pos)
 {
 	eAlumnos buffer;
 
-if (datosAux!=NULL && pos >=0)
+	if (pArray!=NULL && pos >=0)
+	{
+		buffer=pArray[pos];
+		pArray[pos]=pArray[pos+1];
+		pArray[pos+1]=buffer;
+	}
+}
+
+
+int hardcodearAlumnos(eAlumnos* pArray, int size, int cantidad)
 {
-	buffer=datosAux[pos];
-	datosAux[pos]=datosAux[pos+1];
-	datosAux[pos+1]=buffer;
+
+	int cont=0;
+	int i;
+	eAlumnos listaAuxiliar[]=
+	{
+			{20000, "The", "Negan", 33, 'm',{9,9,8},{1,2,2020},1000,0},
+			{20001, "Monica", "Gaztambide", 35, 'f',{5,5,5},{1,2,2019},1001,0},
+			{20002, "Raquel", "Murillo", 43, 'f',{9,9,8},{1,2,2018},1002,0},
+			{20003, "Rick", "Grimes", 29, 'm',{8,4,6},{1,5,2020},1002,0},
+			{20004, "Daryl", "Dixon", 30, 'm',{10,10,10},{1,3,2020},1001,0},
+			{20005, "Rosita", "Espinoza", 31, 'f',{8,10,9},{1,2,2020},1001,0},
+			{20006, "Judith", "Grimes", 25, 'f',{4,10,7},{5,5,2020},1002,0},
+			{20007, "Marty", "Byrde", 22, 'f',{7,7,7},{14,2,2020},1001,0},
+			{20008, "Eugene", "Porter", 19, 'm',{10,2,6},{10,2,2020},1000,0},
+			{20009, "Jacob", "Shell", 38, 'm',{6,6,6},{15,3,2018},1002,0},
+
+	};
+
+if (cantidad <=size && cantidad && cantidad <11)
+{
+	for(i=0; i<cantidad; i++)
+	{
+		pArray[i]=listaAuxiliar[i];
+		cont++;
+	}
+
+
 }
+
+return cont;
 }
+
+
+int buscarAlumno(eAlumnos* pArray,int valorBuscado, int size)
+{
+int indice=-1;
+int i;
+if(pArray!=NULL && size>0 )
+{
+
+	for(i=0;i<size;i++)
+	{
+		if (pArray[i].isEmpty==0 && pArray[i].legajo==valorBuscado)
+		{
+			indice=i;
+			break;
+		}
+		i++;
+	}
+
+}
+
+return indice;
+}
+
+int bajaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera)
+{
+	int indice;
+	int valorBuscado;
+	char respuesta;
+	int ret=0;
+
+	system("CLS()");
+	printf("*****Baja Alumno*****\n\n");
+	utn_getNumero(&valorBuscado,"Ingrese el legajo del Alumno dar de baja \n","Error verifique los datos ingresados quedan %d intentos\n",0,99999,3);
+
+
+	indice=buscarAlumno(pArrayAlumno,valorBuscado,sizeArrayAlumno);
+	if(indice==-1)
+	{
+		printf("No se encontro el alumno para el legajo ingresado\n");
+		system("PAUSE()");
+	}
+	else
+	{
+
+		printf("Legajo          Nombre          Apellido          Edad          Sexo          Nota_1          Nota_2          Promedio_Notas          Fecha de Ingreso\n");
+		mostrarAlumno(pArrayAlumno[indice]);
+
+		utn_getCaracter(&respuesta,"Confirma la baja (s-n)\n","Error, verifique la respuesta ingresada, quedan %d reintentos","sn\0",3);
+		if(respuesta=='s')
+		{
+			pArrayAlumno[indice].isEmpty=1;
+			printf("Se elmino el Alumno\n");
+			ret=1;
+		}
+
+		else
+		{
+			printf("Se cancelo la baja\n");
+		}
+
+	}
+
+
+
+
+return ret;
+}
+
 
 
 
