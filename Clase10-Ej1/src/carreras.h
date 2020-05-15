@@ -5,19 +5,23 @@
  *      Author: aleja
  */
 
+
+
 #ifndef CARRERAS_H_
 #define CARRERAS_H_
-#define CARR_ELEMENTOS 3
-#define CARR_SIZE_CARACTERES 50
-
 typedef struct eCarrera{
 
 	int id;
-	char descripcion[CARR_SIZE_CARACTERES];
+	char descripcion[10];
 
 }eCarrera;
+
+void mostrarCarreras(eCarrera* pArray,int size);
+void mostrarCarrera(eCarrera pArray);
+int buscarCarrera(eCarrera* pArray,int valorBuscado, int size, char* descrCarrera);
+int cargarIdCarrera(eCarrera* pArray,char* valorBuscado, int size, int* idCarrera);
 
 #endif /* CARRERAS_H_ */
 
 
-void mostrarCarreras(eCarrera* pArray,int size);
+

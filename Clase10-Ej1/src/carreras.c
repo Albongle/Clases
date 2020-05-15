@@ -13,7 +13,7 @@
 #include "carreras.h"
 
 
-static void mostrarCarrera(eCarrera pArray);
+void mostrarCarrera(eCarrera pArray);
 void mostrarCarreras(eCarrera* pArray, int size)
 {
 	int i;
@@ -28,8 +28,52 @@ void mostrarCarreras(eCarrera* pArray, int size)
 		}
 }
 
-static void mostrarCarrera(eCarrera pArray)
+void mostrarCarrera(eCarrera pArray)
 {
 	printf("%d          %s\n",pArray.id, pArray.descripcion);
+
+}
+
+
+int buscarCarrera(eCarrera* pArray,int valorBuscado, int size, char* descrCarrera)
+{
+int ret=0;
+int i;
+if(pArray!=NULL && size>0 )
+{
+
+	for(i=0;i<size;i++)
+	{
+		if (pArray[i].id==valorBuscado)
+		{
+			strcpy(descrCarrera,pArray[i].descripcion);
+			ret=1;
+			break;
+		}
+	}
+
+}
+return ret;
+}
+
+int cargarIdCarrera(eCarrera* pArray,char* valorBuscado, int size, int* idCarrera)
+{
+	int ret=0;
+	int i;
+	if(pArray!=NULL && size>0 )
+	{
+
+		for(i=0;i<size;i++)
+		{
+			if ((stricmp(pArray[i].descripcion,valorBuscado))==0)
+			{
+				*idCarrera=pArray[i].id;
+				ret=1;
+				break;
+			}
+		}
+
+	}
+	return ret;
 
 }

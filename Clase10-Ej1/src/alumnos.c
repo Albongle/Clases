@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include "utn.h"
 #include "alumnos.h"
+#include "carreras.h"
 
 
 
@@ -35,7 +36,8 @@ int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera
 
 			system("CLS()");
 			printf("*****Alta Alumno*****\n\n");
-
+	if(pArrayAlumno!=NULL && sizeArrayAlumno>=0 && pArrayCarrera!=NULL && sizeArrayCarrera>0)
+	{
 			indice=buscaIndice(pArrayAlumno,sizeArrayAlumno);
 
 			if(indice==-1)
@@ -62,6 +64,7 @@ int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera
 				do
 				{
 					flag=0;
+					fflush(stdin);
 					flag=utn_getCaracter(&bufferSexo,"Ingrese el sexo de Alumno (m o f)\n","Error verifique los datos ingresados debe ser (m o f) quedan %d intentos\n","mf\0",3);
 
 				}while(!flag);
@@ -91,9 +94,12 @@ int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera
 
 				}while(!flag);
 
-				printf("Ingrese la fecha de ingreso: dd/mm/aaaa"); // Hacer funcion para validar Fechas
-				scanf("%d/%d/%d", &fecha.dia, &fecha.mes,&fecha.anio);
-
+				do
+				{
+					flag=0;
+					fflush(stdin);
+					flag=utn_getFecha(&fecha.dia,&fecha.mes,&fecha.anio,"Ingrese fecha de ingreso\n","Error verifique la fecha ingresada\n",1,31,1,12,2000,2025,3);
+				}while(!flag);
 
 				do
 				{
@@ -107,6 +113,7 @@ int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera
 
 				pArrayAlumno[indice]=nuevoAlumno(legajo,bufferNombre,bufferApellido,bufferSexo,bufferEdad,bufferNota1,bufferNota2,fecha,bufferIdCarrera);
 				ret=1;
+			}
 	}
 
 return ret;
@@ -135,20 +142,21 @@ return nuevoAlumno;
 
 
 
-static void mostrarAlumno(eAlumnos pArray);
-void mostrarAlumnos(eAlumnos* pArray, int size)
+void mostrarAlumno(eAlumnos pArrayAlumno,eCarrera* pArrayCarrera,int sizeArrayCarrera);
+void mostrarAlumnos(eAlumnos* pArrayAlumno, int sizeArrayAlumno, eCarrera* pArrayCarrera, int sizeArrayCarrera)
 {
 	int i;
 	int flag=0;
-	printf("Legajo          Nombre          Apellido          Edad          Sexo          Nota_1          Nota_2          Promedio_Notas          Fecha de Ingreso\n");
 
-	if(pArray!=NULL && size>=0)
+
+	if(pArrayAlumno!=NULL && sizeArrayAlumno>=0 && pArrayCarrera!=NULL && sizeArrayCarrera>0)
 		{
-			for(i=0;i<size;i++)
+			printf("Legajo\tNombre\tApellido\tEdad\tSexo\tNota_1\tNota_2\tPromedio_Notas\tFecha de Ingreso\tCarrera\n");
+			for(i=0;i<sizeArrayAlumno;i++)
 			{
-				if(pArray[i].isEmpty==0)
+				if(pArrayAlumno[i].isEmpty==0)
 				{
-					mostrarAlumno(pArray[i]);
+					mostrarAlumno(pArrayAlumno[i],pArrayCarrera,sizeArrayCarrera);
 					flag=1;
 				}
 			}
@@ -161,10 +169,15 @@ void mostrarAlumnos(eAlumnos* pArray, int size)
 	}
 }
 
-static void mostrarAlumno(eAlumnos pArray)
+void mostrarAlumno(eAlumnos pArrayAlumno,eCarrera* pArrayCarrera,int sizeArrayCarrera)
 {
-	printf("%d          %10s          %10s          %d          %c          %.2f          %.2f          %.2f         %d/%d/%d\n",pArray.legajo,pArray.nombre, pArray.apellido,pArray.edad,pArray.sexo,pArray.evaluacion.nota1,pArray.evaluacion.nota2, pArray.evaluacion.promNotas,pArray.fechaIngreso.dia,pArray.fechaIngreso.mes,pArray.fechaIngreso.anio);
+	char descrCarrera [20];
 
+	if(pArrayCarrera!=NULL && sizeArrayCarrera>0)
+	{
+		buscarCarrera(pArrayCarrera,pArrayAlumno.idCarrera,sizeArrayCarrera,descrCarrera);
+		printf("%d\t%-2.5s\t%-2.5s\t\t%d\t%c\t%.2f\t%.2f\t%.2f\t\t%d/%d/%d\t\t%s\n",pArrayAlumno.legajo,pArrayAlumno.nombre, pArrayAlumno.apellido,pArrayAlumno.edad,pArrayAlumno.sexo,pArrayAlumno.evaluacion.nota1,pArrayAlumno.evaluacion.nota2, pArrayAlumno.evaluacion.promNotas,pArrayAlumno.fechaIngreso.dia,pArrayAlumno.fechaIngreso.mes,pArrayAlumno.fechaIngreso.anio,descrCarrera);
+	}
 }
 
 
@@ -214,7 +227,7 @@ int ordenaAlumnos(eAlumnos* pArray,int size, char sentido)
 	int i;
 	int cont=0;
 	int retorno = 0;
-	if(pArray != NULL && size > 0)
+	if(pArray != NULL && size > 0 && sentido!=' ')
 			{
 				while(flagSwap)
 				{
@@ -226,7 +239,7 @@ int ordenaAlumnos(eAlumnos* pArray,int size, char sentido)
 						{
 						case '>':
 							{
-							if(pArray[i].evaluacion.promNotas<pArray[i+1].evaluacion.promNotas)
+							if(pArray[i].evaluacion.promNotas<pArray[i+1].evaluacion.promNotas && pArray[i].isEmpty==0 && pArray[i+1].isEmpty==0)
 								{
 									flagSwap = 1;
 									change(pArray, i);
@@ -235,7 +248,7 @@ int ordenaAlumnos(eAlumnos* pArray,int size, char sentido)
 							}
 						case '<':
 							{
-							if(pArray[i].evaluacion.promNotas>pArray[i+1].evaluacion.promNotas)
+							if(pArray[i].evaluacion.promNotas>pArray[i+1].evaluacion.promNotas && pArray[i].isEmpty==0 && pArray[i+1].isEmpty==0)
 								{
 									flagSwap = 1;
 									change(pArray, i);
@@ -247,7 +260,7 @@ int ordenaAlumnos(eAlumnos* pArray,int size, char sentido)
 				}
 		retorno = 1;
 			}
-	return retorno;
+return retorno;
 }
 
 static void change(eAlumnos* pArray, int pos)
@@ -268,31 +281,35 @@ int hardcodearAlumnos(eAlumnos* pArray, int size, int cantidad)
 
 	int cont=0;
 	int i;
-	eAlumnos listaAuxiliar[]=
+	if(pArray!=NULL && size>0 && cantidad >0)
 	{
-			{20000, "The", "Negan", 33, 'm',{9,9,8},{1,2,2020},1000,0},
-			{20001, "Monica", "Gaztambide", 35, 'f',{5,5,5},{1,2,2019},1001,0},
-			{20002, "Raquel", "Murillo", 43, 'f',{9,9,8},{1,2,2018},1002,0},
-			{20003, "Rick", "Grimes", 29, 'm',{8,4,6},{1,5,2020},1002,0},
-			{20004, "Daryl", "Dixon", 30, 'm',{10,10,10},{1,3,2020},1001,0},
-			{20005, "Rosita", "Espinoza", 31, 'f',{8,10,9},{1,2,2020},1001,0},
-			{20006, "Judith", "Grimes", 25, 'f',{4,10,7},{5,5,2020},1002,0},
-			{20007, "Marty", "Byrde", 22, 'f',{7,7,7},{14,2,2020},1001,0},
-			{20008, "Eugene", "Porter", 19, 'm',{10,2,6},{10,2,2020},1000,0},
-			{20009, "Jacob", "Shell", 38, 'm',{6,6,6},{15,3,2018},1002,0},
+		eAlumnos listaAuxiliar[]=
+		{
+			{20000, "The", "Negan", 33, 'm',{9,9,8},{01,02,2020},1000,0},
+			{20001, "Monica", "Gaztambide", 35, 'f',{5,5,5},{01,02,2019},1001,0},
+			{20002, "Raquel", "Murillo", 43, 'f',{9,9,8},{01,02,2018},1002,0},
+			{20003, "Rick", "Grimes", 29, 'm',{8,4,6},{01,05,2020},1002,0},
+			{20004, "Daryl", "Dixon", 30, 'm',{10,10,10},{01,03,2020},1001,0},
+			{20005, "Rosita", "Espinoza", 31, 'f',{8,10,9},{01,02,2020},1001,0},
+			{20006, "Judith", "Grimes", 25, 'f',{4,10,7},{05,05,2020},1002,0},
+			{20007, "Marty", "Byrde", 22, 'f',{7,7,7},{14,02,2020},1001,0},
+			{20008, "Eugene", "Porter", 19, 'm',{10,2,6},{10,02,2020},1000,0},
+			{20009, "Jacob", "Shell", 38, 'm',{6,6,6},{15,03,2018},1002,0},
 
-	};
+		};
 
-if (cantidad <=size && cantidad && cantidad <11)
-{
-	for(i=0; i<cantidad; i++)
-	{
-		pArray[i]=listaAuxiliar[i];
-		cont++;
+
+		if (cantidad <=size && cantidad && cantidad <11)
+		{
+			for(i=0; i<cantidad; i++)
+			{
+				pArray[i]=listaAuxiliar[i];
+				cont++;
+			}
+
+
+		}
 	}
-
-
-}
 
 return cont;
 }
@@ -312,7 +329,7 @@ if(pArray!=NULL && size>0 )
 			indice=i;
 			break;
 		}
-		i++;
+
 	}
 
 }
@@ -329,40 +346,279 @@ int bajaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera
 
 	system("CLS()");
 	printf("*****Baja Alumno*****\n\n");
-	utn_getNumero(&valorBuscado,"Ingrese el legajo del Alumno dar de baja \n","Error verifique los datos ingresados quedan %d intentos\n",0,99999,3);
-
-
-	indice=buscarAlumno(pArrayAlumno,valorBuscado,sizeArrayAlumno);
-	if(indice==-1)
-	{
-		printf("No se encontro el alumno para el legajo ingresado\n");
-		system("PAUSE()");
-	}
-	else
+	if(pArrayAlumno!=NULL && pArrayCarrera!=NULL && sizeArrayAlumno>0 &&sizeArrayCarrera>0)
 	{
 
-		printf("Legajo          Nombre          Apellido          Edad          Sexo          Nota_1          Nota_2          Promedio_Notas          Fecha de Ingreso\n");
-		mostrarAlumno(pArrayAlumno[indice]);
+		utn_getNumero(&valorBuscado,"Ingrese el legajo del Alumno dar de baja \n","Error verifique los datos ingresados quedan %d intentos\n",0,99999,3);
 
-		utn_getCaracter(&respuesta,"Confirma la baja (s-n)\n","Error, verifique la respuesta ingresada, quedan %d reintentos","sn\0",3);
-		if(respuesta=='s')
+		indice=buscarAlumno(pArrayAlumno,valorBuscado,sizeArrayAlumno);
+		if(indice==-1)
 		{
-			pArrayAlumno[indice].isEmpty=1;
-			printf("Se elmino el Alumno\n");
-			ret=1;
+			printf("No se encontro el alumno para el legajo ingresado\n");
+			system("PAUSE()");
 		}
-
 		else
 		{
+
+			printf("Legajo\tNombre\tApellido\tEdad\tSexo\tNota_1\tNota_2\tPromedio_Notas\tFecha de Ingreso\tCarrera\n");
+			mostrarAlumno(pArrayAlumno[indice],pArrayCarrera,sizeArrayCarrera);
+			printf("\n\n");
+
+			utn_getCaracter(&respuesta,"Confirma la baja (s-n)\n","Error, verifique la respuesta ingresada\n","sn\0",3);
+
+
+			if(respuesta=='s')
+			{
+				pArrayAlumno[indice].isEmpty=1;
+				printf("Se elmino el Alumno\n");
+				ret=1;
+			}
+
+			else
+			{
 			printf("Se cancelo la baja\n");
+			}
+
 		}
+	}
+
+return ret;
+}
+
+int modifAlumno(eAlumnos alumnoRec ,int opcion, eAlumnos* auxAlumno, eCarrera* pArrayCarrera, int sizeArrayCarrera);
+int opcionesModificacion();
+int modificarAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera)
+{
+	int indice;
+	int valorBuscado;
+	char respuesta;
+	eAlumnos auxAlumno;
+	int ret=0;
+	int opcion;
+
+	system("CLS()");
+	printf("*****Modificar Alumno*****\n\n");
+	if(pArrayAlumno!=NULL && pArrayCarrera!=NULL && sizeArrayAlumno>0 &&sizeArrayCarrera>0)
+	{
+
+		utn_getNumero(&valorBuscado,"Ingrese el legajo del Alumno que desea modificar \n","Error verifique los datos ingresados quedan %d intentos\n",0,99999,3);
+
+		indice=buscarAlumno(pArrayAlumno,valorBuscado,sizeArrayAlumno);
+		if(indice==-1)
+		{
+			printf("No se encontro el alumno para el legajo ingresado\n");
+			system("PAUSE()");
+		}
+		else
+		{
+
+			printf("\n\n\n");
+			printf("Legajo\tNombre\tApellido\tEdad\tSexo\tNota_1\tNota_2\tPromedio_Notas\tFecha de Ingreso\tCarrera\n");
+			mostrarAlumno(pArrayAlumno[indice],pArrayCarrera,sizeArrayCarrera);
+			printf("\n\n");
+			opcion=opcionesModificacion();
+
+			if(modifAlumno(pArrayAlumno[indice],opcion,&auxAlumno,pArrayCarrera,sizeArrayCarrera))
+			{
+
+				utn_getCaracter(&respuesta,"Confirma la modificacion (s-n)\n","Error, verifique la respuesta ingresada\n","sn\0",3);
+
+			}
+			if(respuesta=='s')
+			{
+				pArrayAlumno[indice]=auxAlumno;
+				printf("Se modifico el Alumno\n");
+				ret=1;
+			}
+
+			else
+			{
+			printf("Se cancelo la modificacion\n");
+			}
+
+		}
+	}
+
+return ret;
+}
+
+
+int modifAlumno(eAlumnos alumnoRec ,int opcion, eAlumnos* auxAlumno, eCarrera* pArrayCarrera, int sizeArrayCarrera)
+{
+	eAlumnos modifAlumno;
+	int ret=0;
+	char nombre[50];
+	char apellido[50];
+	char sexo;
+	int edad;
+	float nota1;
+	float nota2;
+	eFecha fecha;
+	int idCarrera;
+
+	modifAlumno=alumnoRec;
+
+	switch(opcion)
+	{
+		case 1:
+				{
+					if(utn_getTexto(nombre,"Ingrese el nombre del alumno\n","Error verifique los datos ingresados quedan %d intentos\n",3,50))
+					{
+						strcpy(modifAlumno.nombre,nombre);
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar el nombre\n");
+					}
+
+					break;
+				}
+		case 2:
+				{
+					if(utn_getTexto(nombre,"Ingrese el Apellido del alumno\n","Error verifique los datos ingresados quedan %d intentos\n",3,50))
+					{
+						strcpy(modifAlumno.apellido,apellido);
+						*auxAlumno=modifAlumno;
+						ret=1;
+							}
+					else
+					{
+						printf("No se pudo modificar el Apellido\n");
+					}
+
+					break;
+				}
+		case 3:
+				{
+					if(utn_getCaracter(&sexo,"Ingrese el sexo de Alumno (m o f)\n","Error verifique los datos ingresados debe ser (m o f) quedan %d intentos\n","mf\0",3))
+					{
+						modifAlumno.sexo=sexo;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+								printf("No se pudo modificar el sexo del alumno\n");
+					}
+
+					break;
+				}
+		case 4:
+				{
+					if(utn_getNumero(&edad,"Ingrese la edad del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",1,99,3))
+					{
+						modifAlumno.edad=edad;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar la edad del alumno\n");
+					}
+
+					break;
+				}
+		case 5:
+				{
+					if(utn_getNumeroConDecimales(&nota1,"Ingrese la primer nota del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",0,10,3))
+					{
+						modifAlumno.evaluacion.nota1=nota1;
+						modifAlumno.evaluacion.promNotas=(modifAlumno.evaluacion.nota1+modifAlumno.evaluacion.nota2)/2;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar la nota 1 del alumno\n");
+					}
+
+					break;
+				}
+		case 6:
+				{
+					if(utn_getNumeroConDecimales(&nota2,"Ingrese la segunda nota del Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",0,10,3))
+					{
+						modifAlumno.evaluacion.nota2=nota2;
+						modifAlumno.evaluacion.promNotas=(modifAlumno.evaluacion.nota1+modifAlumno.evaluacion.nota2)/2;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar la nota 2 del alumno\n");
+					}
+
+					break;
+				}
+		case 7:
+				{
+
+					mostrarCarreras(pArrayCarrera,sizeArrayCarrera);
+					if(utn_getNumero(&idCarrera,"\nIngrese Id de Carrera para el Alumno\n","Error verifique los datos ingresados quedan %d intentos\n",1000,1002,3))
+					{
+						modifAlumno.idCarrera=idCarrera;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar el Id de carrera del alumno\n");
+					}
+
+					break;
+				}
+
+		case 8:
+				{
+					if(utn_getFecha(&fecha.dia,&fecha.mes,&fecha.anio,"Ingrese fecha de ingreso\n","Error verifique la fecha ingresada\n",1,31,1,12,2000,2025,3))
+					{
+						modifAlumno.fechaIngreso=fecha;
+						*auxAlumno=modifAlumno;
+						ret=1;
+					}
+					else
+					{
+						printf("No se pudo modificar la fecha de ingreso del alumno\n");
+					}
+
+					break;
+				}
+		default:
+				{
+					break;
+				}
+
 
 	}
 
-
-
-
 return ret;
+}
+
+
+int opcionesModificacion()
+{
+	int opcion=0;
+	printf("*****Opciones de Modificacion*****\n\n");
+
+	printf("1-Nombre\n");
+	printf("2-Apellido\n");
+	printf("3-Sexo\n");
+	printf("4-Edad\n");
+	printf("5-Nota 1\n");
+	printf("6-Nota 2\n");
+	printf("7-Id Carrera\n");
+	printf("8-Fecha de Ingreso\n");
+	printf("9-Salir\n");
+
+	if(!(utn_getNumero(&opcion,"Elija un opcion: \n","Error verifique los datos ingresados quedan %d intentos\n",1,9,3)))
+	{
+		printf("No se reconocio el ingreso, supero el maximo de posibilidades\n");
+		system("PAUSE()");
+	}
+
+return opcion;
 }
 
 

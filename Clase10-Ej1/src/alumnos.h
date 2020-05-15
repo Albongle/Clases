@@ -5,12 +5,11 @@
  *      Author: aleja
  */
 
+
+
 #ifndef ALUMNOS_H_
 #define ALUMNOS_H_
-#define Q_ALUMNOS 10
-#define A_SIZE_CARACTERES 50
 #include "carreras.h"
-
 typedef struct eFecha{
 
 	int dia;
@@ -30,8 +29,8 @@ typedef struct eNotas{
 typedef struct eAlumnos{
 
 	int legajo;
-	char nombre[A_SIZE_CARACTERES];
-	char apellido[A_SIZE_CARACTERES];
+	char nombre[50];
+	char apellido[50];
 	int edad;
 	char sexo;
 	eNotas evaluacion;
@@ -40,15 +39,15 @@ typedef struct eAlumnos{
 	int isEmpty;
 }eAlumnos;
 
-
-int getSetDeDatos(eAlumnos* pArray, int sizeArray, int* pos);
-void mostrarAlumnos(eAlumnos* pArray, int size);
 int buscaIndice(eAlumnos* pArray, int size);
-void iniArrayAlumnos(eAlumnos* pArray,int size,int valorInt);
 int ordenaAlumnos(eAlumnos* pArray,int size, char sentido);
 int hardcodearAlumnos(eAlumnos* pArray, int size, int cantidad);
+void iniArrayAlumnos(eAlumnos* pArray,int size,int valorInt);
 int altaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera);
 int bajaAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera);
+int modificarAlumno(eAlumnos* pArrayAlumno, int sizeArrayAlumno, int legajo, eCarrera* pArrayCarrera, int sizeArrayCarrera);
+void mostrarAlumno(eAlumnos pArrayAlumno,eCarrera* pArrayCarrera,int sizeArrayCarrera);
+void mostrarAlumnos(eAlumnos* pArrayAlumno, int sizeArrayAlumno, eCarrera* pArrayCarrera, int sizeArrayCarrera);
 
 
 #endif /* ALUMNOS_H_ */
